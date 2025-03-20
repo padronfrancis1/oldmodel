@@ -1,3 +1,4 @@
 joblib
 scikit-learn
 flask
+opencensus-ext-azure
