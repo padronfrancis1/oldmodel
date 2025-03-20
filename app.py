@@ -2,7 +2,7 @@ import joblib
 import numpy as np
 import logging
 from flask import Flask, request, jsonify
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import precision_score, recall_score, f1_score
 from opencensus.ext.azure.log_exporter import AzureLogHandler
 
 # Load the trained model
@@ -11,13 +11,13 @@ model = joblib.load("old_model.pkl")
 # Initialize Flask app
 app = Flask(__name__)
 
-# Azure Application Insights Instrumentation Key
-instrumentation_key = "41e4af5a-1e06-4798-9553-31ab4e22b49c"
+# Azure Application Insights Connection String
+CONNECTION_STRING = "InstrumentationKey=41e4af5a-1e06-4798-9553-31ab4e22b49c;IngestionEndpoint=https://canadacentral-1.in.applicationinsights.azure.com/;LiveEndpoint=https://canadacentral.livediagnostics.monitor.azure.com/;ApplicationId=63ed1c97-3ddb-4682-9667-b833b4507e89"
 
-# Configure logging for Azure
+# Configure logging for Azure Application Insights
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-logger.addHandler(AzureLogHandler(connection_string=f"InstrumentationKey={instrumentation_key}"))
+logger.addHandler(AzureLogHandler(connection_string=CONNECTION_STRING))
 
 # Track model performance over time
 model_metrics = {
@@ -63,7 +63,7 @@ def predict():
         else:
             precision, recall, f1 = 1.0, 1.0, 1.0  # Default for first prediction
 
-        # Log to Azure Application Insights
+        # Log Prediction Data to Azure
         log_message = f"Prediction: {prediction[0]}, Actual: {actual_label}, Accuracy: {accuracy:.2f}, Precision: {precision:.2f}, Recall: {recall:.2f}, F1-Score: {f1:.2f}"
         logger.info(log_message)
 
