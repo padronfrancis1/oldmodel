@@ -1,0 +1,16 @@
+name: ml-canary-env
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+    - pip>=23.0
+    - setuptools>=65.0.0
+    - wheel
+    - scikit-learn==1.3.0
+    - pandas==2.1.1
+    - joblib==1.3.2
+    - azureml-defaults==1.53.0
+    - numpy>=1.22,<1.24
